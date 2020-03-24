@@ -28,7 +28,7 @@ func newFilter(size int) *bloomFilter {
 func (bf *bloomFilter) add(item []byte) {
 	hashes := bf.hashValues(item)
 	for i := uint(0); i < bf.k; i++ {
-		position := uint(hashes[i]) % bf.m
+		position := uint(hashes[i]) % bf.m // mod since the hashed number may be larger than our bitset
 		bf.bitset[position] = true
 	}
 	bf.n++
@@ -38,7 +38,7 @@ func (bf *bloomFilter) test(item []byte) bool {
 	exists := true
 	hashes := bf.hashValues(item)
 	for i := uint(0); i < bf.k; i++ {
-		position := uint(hashes[i]) % bf.m
+		position := uint(hashes[i]) % bf.m // mod since the hashed number may be larger than our bitset
 		if !bf.bitset[position] {
 			exists = false
 			break
